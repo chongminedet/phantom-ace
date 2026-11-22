@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ph_antom ACE — Cinematographer &amp; Video Editor</title>
+<meta name="description" content="Ph_antom ACE — cinematographer, video editor and content creator. Cinematic visuals for brands, real estate, events, music videos and social media.">
+<meta name="theme-color" content="#07070a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ph_antom ACE — Cinematographer &amp; Video Editor">
+<meta property="og:description" content="Creating cinematic visuals that leave a lasting impression.">
+<meta property="og:image" content="https://phantomace.com/assest/poster-ppf.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2307070a'/%3E%3Crect x='4' y='4' width='56' height='56' fill='none' stroke='%23c9a227' stroke-width='2'/%3E%3Ctext x='32' y='47' font-family='Impact,Haettenschweiler,sans-serif' font-size='40' fill='%23c9a227' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+<!-- Third-party CSS loads async: a slow CDN must never block first paint
+     (it used to hold the whole <body> hostage, so the preloader could not
+     even appear). css/styles.css stays render-blocking — it is local. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Space+Mono:wght@400;700&display=swap" media="print" onload="this.media='all';window.__fontsCss=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css" media="print" onload="this.media='all'">
+<noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css">
+</noscript>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+<!-- PRELOADER / FILM LEADER -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__bars"><i></i><i></i><i></i><i></i></div>
+  <div class="loader__core">
+    <svg class="loader__dial" viewBox="0 0 200 200" aria-hidden="true">
+      <circle class="loader__ring-bg" cx="100" cy="100" r="92"></circle>
+      <circle class="loader__ring" cx="100" cy="100" r="92" id="loaderRing"></circle>
+      <line class="loader__cross" x1="100" y1="4" x2="100" y2="34"></line>
+      <line class="loader__cross" x1="100" y1="166" x2="100" y2="196"></line>
+      <line class="loader__cross" x1="4" y1="100" x2="34" y2="100"></line>
+      <line class="loader__cross" x1="166" y1="100" x2="196" y2="100"></line>
+    </svg>
+    <div class="loader__count"><span id="loaderNum">00</span></div>
+    <div class="loader__label">THREADING&nbsp;REEL</div>
+  </div>
+  <div class="loader__foot">
+    <span>PH_ANTOM&nbsp;ACE</span>
+    <span>24&nbsp;FPS&nbsp;·&nbsp;REC.709</span>
+  </div>
+</div>
+
+<!-- Early film leader: dismisses the preloader with zero network dependency.
+     main.js claims ownership when it boots; if it never loads, this still runs. -->
+<script>
+(function () {
+  var D = document, L = D.getElementById('loader');
+  if (!L) return;
+  var S = window.__loaderInline = { done: false, owner: null };
+  function finish(instant) {
+    if (S.done) return;
+    S.done = true;
+    S.at = performance.now();
+    D.documentElement.classList.add('is-loaded');
+    if (instant) { L.style.display = 'none'; return; }
+    L.style.transition = 'opacity .45s ease';
+    L.style.opacity = '0';
+    setTimeout(function () { L.style.display = 'none'; }, 470);
+  }
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { finish(true); return; }
+  var num = D.getElementById('loaderNum');
+  var ring = D.getElementById('loaderRing');
+  var CIRC = 578, t0 = performance.now(), DUR = 2100;
+  function step(now) {
+    if (S.done || S.owner === 'gsap') return;
+    var p = Math.min(1, (now - t0) / DUR), v = Math.round(p * 100);
+    if (num) num.textContent = v < 10 ? '0' + v : '' + v;
+    if (ring) ring.style.strokeDashoffset = CIRC - (CIRC * v) / 100;
+    if (p < 1) requestAnimationFrame(step);
+    else finish(false);
+  }
+  requestAnimationFrame(step);
+})();
+</script>
+
+<!-- FILM FX OVERLAYS -->
+<div class="fx fx--grain" aria-hidden="true"></div>
+<div class="fx fx--vignette" aria-hidden="true"></div>
+<div class="fx fx--scan" aria-hidden="true"></div>
+<div class="fx fx--bars fx--bar-top" aria-hidden="true"></div>
+<div class="fx fx--bars fx--bar-bot" aria-hidden="true"></div>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor" aria-hidden="true">
+  <div class="cursor__dot"></div>
+  <div class="cursor__ring"><span class="cursor__label" id="cursorLabel"></span></div>
+</div>
+
+<!-- CAMERA HUD -->
+<div class="hud hud--tl" aria-hidden="true"><span class="hud__key">TC</span><span id="timecode">00:00:00:00</span></div>
+<div class="hud hud--tr" aria-hidden="true"><i class="hud__rec"></i>REC</div>
+<div class="hud hud--bl" aria-hidden="true"><span id="hudSection">01 — OPENING</span></div>
+<div class="hud hud--br" aria-hidden="true">ISO 800 · f/1.8 · 1/50</div>
+<div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#home" class="nav__logo" data-scroll>Ph_antom<span>ACE</span></a>
+  <ul class="nav__menu" id="navMenu">
+    <li><a href="#home" class="nav__link" data-scroll>01 Index</a></li>
+    <li><a href="#about" class="nav__link" data-scroll>02 About</a></li>
+    <li><a href="#craft" class="nav__link" data-scroll>03 Craft</a></li>
+    <li><a href="#gear" class="nav__link" data-scroll>04 Gear</a></li>
+    <li><a href="#work" class="nav__link" data-scroll>05 Reel</a></li>
+    <li><a href="#contact" class="nav__link" data-scroll>06 Contact</a></li>
+  </ul>
+  <a href="links.html" class="nav__cta" data-cursor="view"><i class="fa-solid fa-arrow-up-right-from-square"></i> Link Hub</a>
+  <button class="nav__burger" id="navBurger" aria-label="Menu" aria-expanded="false" aria-controls="navSheet"><span></span><span></span></button>
+</nav>
+<div class="nav__sheet" id="navSheet">
+  <a href="#home" data-scroll>01 Index</a>
+  <a href="#about" data-scroll>02 About</a>
+  <a href="#craft" data-scroll>03 Craft</a>
+  <a href="#gear" data-scroll>04 Gear</a>
+  <a href="#work" data-scroll>05 Reel</a>
+  <a href="#contact" data-scroll>06 Contact</a>
+  <a href="links.html" class="nav__sheet-hub">Link Hub <i class="fa-solid fa-arrow-right"></i></a>
+</div>
+
+<main id="main">
+
+  <!-- 01 · HERO -->
+  <section class="hero" id="home" data-section="01 — OPENING" data-nav="#home">
+    <div class="hero__media">
+      <video class="hero__video is-on" data-hero playsinline muted loop preload="auto" poster="assest/web/poster-group-a.jpg">
+        <source src="assest/web/group-a-loop.mp4" type="video/mp4">
+      </video>
+      <video class="hero__video" data-hero playsinline muted loop preload="none" poster="assest/web/poster-shevi.jpg">
+        <source src="assest/web/shevi-loop.mp4" type="video/mp4">
+      </video>
+      <video class="hero__video" data-hero playsinline muted loop preload="none" poster="assest/web/poster-ppf.jpg">
+        <source src="assest/web/ppf-loop.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero__grade" aria-hidden="true"></div>
+
+    <div class="hero__inner">
+      <p class="eyebrow hero__eyebrow"><span class="eyebrow__rule"></span> Lagos, Nigeria — Director of Photography</p>
+
+      <h1 class="hero__title">
+        <span class="hero__line"><span class="hero__line-in">PH_ANTOM</span></span>
+        <span class="hero__line hero__line--gold"><span class="hero__line-in">ACE</span></span>
+      </h1>
+
+      <p class="hero__roles">
+        <span class="typed-wrap"><span id="typedRoles"></span></span>
+      </p>
+
+      <div class="hero__cta">
+        <a href="#work" class="btn btn--gold" data-scroll data-cursor="view"><span>Watch the reel</span><i class="fa-solid fa-play"></i></a>
+        <a href="#contact" class="btn btn--ghost" data-scroll data-cursor="view"><span>Book a project</span></a>
+      </div>
+    </div>
+
+    <ul class="hero__hud" aria-hidden="true">
+      <li>REC.709</li><li>24 FPS</li><li>180° SHUTTER</li><li>4K DCI</li>
+    </ul>
+
+    <a href="#about" class="hero__scroll" data-scroll data-cursor="view" aria-label="Scroll">
+      <span class="hero__scroll-txt">SCROLL</span>
+      <span class="hero__scroll-rail"><i></i></span>
+    </a>
+
+    <div class="hero__frame" aria-hidden="true">
+      <i class="c c--tl"></i><i class="c c--tr"></i><i class="c c--bl"></i><i class="c c--br"></i>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track" id="marqueeTrack">
+      <span>Cinematography <b>✦</b> Color Grading <b>✦</b> Camera Operation <b>✦</b> Lighting Design <b>✦</b> Drone Operation <b>✦</b> Video Editing <b>✦</b> Motion Graphics <b>✦</b> Social Content <b>✦</b> </span>
+      <span>Cinematography <b>✦</b> Color Grading <b>✦</b> Camera Operation <b>✦</b> Lighting Design <b>✦</b> Drone Operation <b>✦</b> Video Editing <b>✦</b> Motion Graphics <b>✦</b> Social Content <b>✦</b> </span>
+    </div>
+  </div>
+
+  <!-- 02 · ABOUT -->
+  <section class="about section" id="about" data-section="02 — ABOUT" data-nav="#about">
+    <div class="wrap">
+      <header class="sec-head">
+        <span class="eyebrow"><span class="eyebrow__rule"></span> 02 — About</span>
+        <h2 class="sec-title" data-split>Every frame<br><em>tells a story.</em></h2>
+      </header>
+
+      <div class="about__grid">
+        <div class="about__media" data-parallax="0.12">
+          <div class="filmstrip">
+            <div class="filmstrip__perf filmstrip__perf--t"></div>
+            <img src="assest/WhatsApp Image 2026-07-24 at 11.24.22 PM.jpeg" alt="Ph_antom ACE on set" loading="lazy">
+            <div class="filmstrip__perf filmstrip__perf--b"></div>
+          </div>
+          <div class="about__stamp">EST. 2026 <i class="fa-solid fa-circle-notch"></i> NG</div>
+        </div>
+
+        <div class="about__copy">
+          <p class="about__lead" data-split>Hi, I'm <strong>Ph_antom ACE</strong> — cinematographer, video editor and content creator passionate about telling compelling stories through visuals.</p>
+          <p class="reveal">I specialise in creating high-quality content for brands, businesses, real estate, events and social media. My goal is to produce cinematic visuals that connect with audiences and elevate every project.</p>
+
+          <ul class="about__roles reveal">
+            <li><i class="fa-solid fa-clapperboard"></i> Freelance Videographer &amp; Editor</li>
+            <li><i class="fa-solid fa-mobile-screen-button"></i> Social Media Content Creator</li>
+          </ul>
+
+          <div class="brands reveal">
+            <span class="brands__label">Trusted by</span>
+            <div class="brands__list">
+              <span class="brand">Ladeals Homes</span>
+              <span class="brand">Rebels</span>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat"><span class="stat__n" data-count="8" data-suffix="+">8+</span><span class="stat__l">Core disciplines</span></div>
+            <div class="stat"><span class="stat__n" data-count="7" data-suffix="">7</span><span class="stat__l">Industries served</span></div>
+            <div class="stat"><span class="stat__n" data-count="4" data-suffix="K">4K</span><span class="stat__l">Delivery format</span></div>
+            <div class="stat"><span class="stat__n" data-count="24" data-suffix="fps">24fps</span><span class="stat__l">Signature cadence</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · CRAFT -->
+  <section class="craft section" id="craft" data-section="03 — CRAFT" data-nav="#craft">
+    <div class="wrap">
+      <header class="sec-head sec-head--split">
+        <div>
+          <span class="eyebrow"><span class="eyebrow__rule"></span> 03 — Craft</span>
+          <h2 class="sec-title" data-split>The<br><em>toolkit.</em></h2>
+        </div>
+        <p class="sec-note reveal">Eight disciplines that carry a project from the first light of pre-production to the final grade and export.</p>
+      </header>
+
+      <div class="skills" id="skills">
+        <article class="skill" data-reveal>
+          <span class="skill__num">01</span>
+          <h3 class="skill__name">Cinematography</h3>
+          <p class="skill__desc">Visual storytelling through composition, lens language and camera movement.</p>
+          <span class="skill__go"><i class="fa-solid fa-arrow-right"></i></span>
+        </article>
+        <article class="skill" data-reveal>
+          <span class="skill__num">02</span>
+          <h3 class="skill__name">Video Editing</h3>
+          <p class="skill__desc">Narrative structure, pacing and rhythm cut in Premiere Pro.</p>
+          <span class="skill__go"><i class="fa-solid fa-arrow-right"></i></span>
+        </article>
+        <article class="skill" data-reveal>
+          <span class="skill__num">03</span>
+          <h3 class="skill__name">Color Grading</h3>
+          <p class="skill__desc">Correction, custom looks and LUTs that protect skin tones and mood.</p>
+          <span class="skill__go"><i class="fa-solid fa-arrow-right"></i></span>
+        </article>
+        <article class="skill" data-reveal>
+          <span class="skill__num">04</span>
+          <h3 class="skill__name">Camera Operation</h3>
+          <p class="skill__desc">Manual exposure, focus pulling, frame-rate and white balance control.</p>
+          <span class="skill__go"><i class="fa-solid fa-arrow-right"></i></span>
+        </article>
+        <article class="skill" data-reveal>
+          <span class="skill__num">05</span>
+          <h3 class="skill__name">Lighting Setup</h3>
+          <p class="skill__desc">Three-point rigs, LED programming and practical mood lighting.</p>
+          <span class="skill__go"><i class="fa-solid fa-arrow-right"></i></span>
+        </article>
+        <article class="skill" data-reveal>
+          <span class="skill__num">06</span>
+          <h3 class="skill__name">Drone Operation</h3>
+          <p class="skill__desc">Aerial cinematography with flight planning and safe, cinematic paths.</p>
+          <span class="skill__go"><i class="fa-solid fa-arrow-right"></i></span>
+        </article>
+        <article class="skill" data-reveal>
+          <span class="skill__num">07</span>
+          <h3 class="skill__name">Social Content</h3>
+          <p class="skill__desc">Vertical-first edits engineered for Reels, TikTok and Shorts.</p>
+          <span class="skill__go"><i class="fa-solid fa-arrow-right"></i></span>
+        </article>
+        <article class="skill" data-reveal>
+          <span class="skill__num">08</span>
+          <h3 class="skill__name">Motion Graphics</h3>
+          <p class="skill__desc">Title sequences, lower thirds and compositing built in After Effects.</p>
+          <span class="skill__go"><i class="fa-solid fa-arrow-right"></i></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · GEAR -->
+  <section class="gear section" id="gear" data-section="04 — GEAR" data-nav="#gear">
+    <div class="wrap">
+      <header class="sec-head sec-head--split">
+        <div>
+          <span class="eyebrow"><span class="eyebrow__rule"></span> 04 — Equipment</span>
+          <h2 class="sec-title" data-split>What's in<br><em>the case.</em></h2>
+        </div>
+        <p class="sec-note reveal">Camera bodies, glass, grip, audio and the post suite — packed and ready to travel.</p>
+      </header>
+
+      <div class="gear__grid">
+        <div class="gear__card" data-reveal>
+          <span class="gear__idx">A</span>
+          <h3><i class="fa-solid fa-video"></i> Camera</h3>
+          <ul>
+            <li>Cinema camera body</li>
+            <li>Mirrorless hybrid</li>
+            <li>Prime &amp; zoom lens set</li>
+            <li>Gimbal stabiliser</li>
+            <li>Drone system</li>
+          </ul>
+        </div>
+        <div class="gear__card" data-reveal>
+          <span class="gear__idx">B</span>
+          <h3><i class="fa-solid fa-microphone-lines"></i> Sound</h3>
+          <ul>
+            <li>Shotgun microphone</li>
+            <li>Wireless lavalier set</li>
+            <li>Field audio recorder</li>
+            <li>Boom pole</li>
+          </ul>
+        </div>
+        <div class="gear__card" data-reveal>
+          <span class="gear__idx">C</span>
+          <h3><i class="fa-solid fa-lightbulb"></i> Light</h3>
+          <ul>
+            <li>LED panels</li>
+            <li>Softboxes &amp; modifiers</li>
+            <li>Reflectors</li>
+            <li>RGB lights</li>
+            <li>Light stands &amp; grip</li>
+          </ul>
+        </div>
+        <div class="gear__card" data-reveal>
+          <span class="gear__idx">D</span>
+          <h3><i class="fa-solid fa-laptop"></i> Post</h3>
+          <ul>
+            <li>Adobe Premiere Pro</li>
+            <li>After Effects</li>
+            <li>CapCut</li>
+            <li>DaVinci Resolve</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · REEL -->
+  <section class="reel section" id="work" data-section="05 — REEL" data-nav="#work">
+    <div class="reel__viewport" id="reelViewport">
+      <div class="reel__track" id="reelTrack">
+
+        <div class="reel__intro">
+          <span class="eyebrow"><span class="eyebrow__rule"></span> 05 — Selected work</span>
+          <h2 class="sec-title">The <em>reel.</em></h2>
+          <p class="sec-note">Three cuts from the current slate — a showreel, a short film and a commercial. Press play for the full frame.</p>
+          <div class="reel__hint"><span>Drag or scroll</span><i class="fa-solid fa-arrow-right-long"></i></div>
+        </div>
+
+        <article class="reel-card reel-card--wide" data-reveal>
+          <a class="reel-card__frame gclick" href="assest/web/ppf.mp4" data-type="video" data-cursor="play" aria-label="Play PPF Mixed and Mastered">
+            <img src="assest/web/poster-ppf.jpg" alt="PPF Mixed and Mastered poster" class="reel-card__img" loading="lazy">
+            <video class="reel-card__vid" muted loop playsinline preload="none" data-src="assest/web/ppf-loop.mp4"></video>
+            <span class="reel-card__play"><i class="fa-solid fa-play"></i></span>
+            <span class="reel-card__tag">Showreel</span>
+          </a>
+          <div class="reel-card__body">
+            <span class="reel-card__idx">01 / 03</span>
+            <h3>PPF — Mixed &amp; Mastered</h3>
+            <p>A curated reel of cinematography and editing across genres, colour scripts and formats.</p>
+            <ul class="reel-card__meta"><li>Showreel</li><li>Cinematography</li><li>Edit &amp; Grade</li></ul>
+          </div>
+        </article>
+
+        <article class="reel-card reel-card--tall" data-reveal>
+          <a class="reel-card__frame gclick" href="assest/web/group-a.mp4" data-type="video" data-cursor="play" aria-label="Play Group A Movie Project">
+            <img src="assest/web/poster-group-a.jpg" alt="Group A movie project poster" class="reel-card__img" loading="lazy">
+            <video class="reel-card__vid" muted loop playsinline preload="none" data-src="assest/web/group-a-loop.mp4"></video>
+            <span class="reel-card__play"><i class="fa-solid fa-play"></i></span>
+            <span class="reel-card__tag">Short film</span>
+          </a>
+          <div class="reel-card__body">
+            <span class="reel-card__idx">02 / 03</span>
+            <h3>Group A — Movie Project</h3>
+            <p>Narrative storytelling with deliberate blocking, motivated light and an unhurried edit.</p>
+            <ul class="reel-card__meta"><li>Short film</li><li>Direction of Photography</li></ul>
+          </div>
+        </article>
+
+        <article class="reel-card reel-card--wide" data-reveal>
+          <a class="reel-card__frame gclick" href="assest/web/shevi.mp4" data-type="video" data-cursor="play" aria-label="Play Shevi Ad">
+            <img src="assest/web/poster-shevi.jpg" alt="Shevi advert poster" class="reel-card__img" loading="lazy">
+            <video class="reel-card__vid" muted loop playsinline preload="none" data-src="assest/web/shevi-loop.mp4"></video>
+            <span class="reel-card__play"><i class="fa-solid fa-play"></i></span>
+            <span class="reel-card__tag">Commercial</span>
+          </a>
+          <div class="reel-card__body">
+            <span class="reel-card__idx">03 / 03</span>
+            <h3>Shevi — Brand Ad</h3>
+            <p>A commercial cut built for conversion: crisp product beats, warm grade, tight rhythm.</p>
+            <ul class="reel-card__meta"><li>Advertisement</li><li>Brand</li><li>Social cut-downs</li></ul>
+          </div>
+        </article>
+
+        <div class="reel__end">
+          <span class="eyebrow"><span class="eyebrow__rule"></span> More</span>
+          <h3 class="reel__end-title">Full archive<br>lives on the<br><em>channels.</em></h3>
+          <a href="links.html" class="btn btn--gold" data-cursor="view"><span>Open link hub</span><i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHIVE / CHANNEL LINKS -->
+  <section class="channels section" id="channels" data-section="05 — ARCHIVE" data-nav="#work">
+    <div class="wrap">
+      <header class="sec-head sec-head--split">
+        <div>
+          <span class="eyebrow"><span class="eyebrow__rule"></span> Archive</span>
+          <h2 class="sec-title" data-split>Browse by<br><em>channel.</em></h2>
+        </div>
+        <p class="sec-note reveal">Every category of work, collected in one place.</p>
+      </header>
+
+      <div class="channels__list">
+        <a href="links.html" class="channel" data-reveal data-cursor="view">
+          <span class="channel__num">01</span><span class="channel__name">Commercial Videos</span>
+          <span class="channel__meta">Brand · Product · Ads</span>
+          <span class="channel__go"><em>Link hub</em><i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+        <a href="links.html" class="channel" data-reveal data-cursor="view">
+          <span class="channel__num">02</span><span class="channel__name">Real Estate Videos</span>
+          <span class="channel__meta">Walkthroughs · Aerial</span>
+          <span class="channel__go"><em>Link hub</em><i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+        <a href="links.html" class="channel" data-reveal data-cursor="view">
+          <span class="channel__num">03</span><span class="channel__name">Event Highlights</span>
+          <span class="channel__meta">Weddings · Corporate</span>
+          <span class="channel__go"><em>Link hub</em><i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+        <a href="links.html" class="channel" data-reveal data-cursor="view">
+          <span class="channel__num">04</span><span class="channel__name">Music Videos</span>
+          <span class="channel__meta">Concept · Performance</span>
+          <span class="channel__go"><em>Link hub</em><i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+        <a href="links.html" class="channel" data-reveal data-cursor="view">
+          <span class="channel__num">05</span><span class="channel__name">Social Media Reels</span>
+          <span class="channel__meta">Vertical · Short form</span>
+          <span class="channel__go"><em>Link hub</em><i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES -->
+  <section class="inds section" id="industries" data-section="05 — INDUSTRIES" data-nav="#work">
+    <div class="wrap">
+      <header class="sec-head">
+        <span class="eyebrow"><span class="eyebrow__rule"></span> Industries</span>
+        <h2 class="sec-title" data-split>Built for<br><em>every set.</em></h2>
+      </header>
+      <ul class="inds__grid">
+        <li data-reveal><span>Real Estate</span></li>
+        <li data-reveal><span>Commercial Ads</span></li>
+        <li data-reveal><span>Events</span></li>
+        <li data-reveal><span>Music Videos</span></li>
+        <li data-reveal><span>Short Films</span></li>
+        <li data-reveal><span>Social Media</span></li>
+        <li data-reveal><span>Corporate</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 06 · CONTACT -->
+  <section class="contact section" id="contact" data-section="06 — CONTACT" data-nav="#contact">
+    <div class="wrap">
+      <header class="sec-head sec-head--center">
+        <span class="eyebrow"><span class="eyebrow__rule"></span> 06 — Contact</span>
+        <h2 class="sec-title sec-title--xl" data-split>Ready for your<br><em>next project?</em></h2>
+        <p class="contact__sub reveal">Let's create visuals that leave a lasting impression.</p>
+      </header>
+
+      <div class="contact__grid">
+        <div class="contact__info">
+          <a class="contact__line reveal" href="tel:+2349079339677" data-cursor="view">
+            <span class="contact__k">Phone</span><span class="contact__v">+234 907 933 9677</span>
+          </a>
+          <a class="contact__line reveal" href="mailto:hello@phantomace.com" data-cursor="view">
+            <span class="contact__k">Email</span><span class="contact__v">hello@phantomace.com</span>
+          </a>
+          <div class="contact__line reveal">
+            <span class="contact__k">Base</span><span class="contact__v">Lagos, Nigeria — available to travel</span>
+          </div>
+
+          <div class="socials reveal">
+            <!-- hidden until js/socials.js carries a real URL: an icon that
+                 pretends to be Instagram but lands on the link hub is a lie -->
+            <a href="links.html" class="social" data-social="instagram" data-cursor="view" aria-label="Instagram" hidden><i class="fa-brands fa-instagram"></i></a>
+            <a href="links.html" class="social" data-social="tiktok" data-cursor="view" aria-label="TikTok" hidden><i class="fa-brands fa-tiktok"></i></a>
+            <a href="links.html" class="social" data-social="youtube" data-cursor="view" aria-label="YouTube" hidden><i class="fa-brands fa-youtube"></i></a>
+            <a href="links.html" class="social" data-cursor="view" aria-label="Link hub"><i class="fa-solid fa-link"></i></a>
+          </div>
+          <p class="contact__note reveal">Socials coming soon — everything else is in the link hub.</p>
+        </div>
+
+        <form class="form" id="contactForm" novalidate>
+          <div class="form__row">
+            <label class="field"><span>Your name</span><input type="text" id="fName" name="name" autocomplete="name" required placeholder="Jane Doe"></label>
+            <label class="field"><span>Your email</span><input type="email" id="fEmail" name="email" autocomplete="email" required placeholder="jane@studio.com"></label>
+          </div>
+          <label class="field"><span>Project type</span>
+            <select id="fType" name="type">
+              <option>Commercial / Brand</option>
+              <option>Real Estate</option>
+              <option>Event Coverage</option>
+              <option>Music Video</option>
+              <option>Social Media Content</option>
+              <option>Corporate Video</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label class="field"><span>Brief</span><textarea id="fMsg" name="message" rows="4" required placeholder="Tell me about the project, timeline and location…"></textarea></label>
+          <button type="submit" class="btn btn--gold btn--block" data-cursor="view"><span>Send the brief</span><i class="fa-solid fa-paper-plane"></i></button>
+          <p class="form__hint">Opens WhatsApp with your message pre-filled — no backend needed.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__top">
+        <a href="#home" class="footer__logo" data-scroll>Ph_antom<span>ACE</span></a>
+        <p class="footer__tag">Cinematographer · Video Editor · Content Creator</p>
+        <a href="#home" class="footer__up" data-scroll data-cursor="view"><i class="fa-solid fa-arrow-up"></i></a>
+      </div>
+      <div class="footer__cols">
+        <div>
+          <h4>Navigate</h4>
+          <a href="#about" data-scroll>About</a><a href="#craft" data-scroll>Craft</a>
+          <a href="#gear" data-scroll>Gear</a><a href="#work" data-scroll>Reel</a>
+          <a href="#contact" data-scroll>Contact</a>
+        </div>
+        <div>
+          <h4>Watch <em>· all on the link hub</em></h4>
+          <a href="links.html">Commercial Videos</a><a href="links.html">Real Estate</a>
+          <a href="links.html">Event Highlights</a><a href="links.html">Music Videos</a>
+          <a href="links.html">Social Reels</a>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <a href="tel:+2349079339677">+234 907 933 9677</a>
+          <a href="mailto:hello@phantomace.com">hello@phantomace.com</a>
+          <span>Lagos, Nigeria</span>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 Ph_antom ACE — All rights reserved.</span>
+        <span class="footer__cue">Creating cinematic visuals that leave a lasting impression.</span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Observer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.11/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/js/glightbox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.min.js"></script>
+<script src="js/socials.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
